@@ -3,6 +3,7 @@ import Head from "next/head";
 import { User, Users } from "../../additional";
 import { GetStaticProps } from "next";
 import styles from "../../styles/Gallery.module.css";
+import Link from "next/link";
 
 export const getStaticProps: GetStaticProps<{ users: Users[] }> = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -15,8 +16,13 @@ export const getStaticProps: GetStaticProps<{ users: Users[] }> = async () => {
   };
 };
 
-const Gallery = ({ users }) => {
-  // const Gallery = (users: Users) => {
+interface GalleryProps {
+  users: Users;
+}
+
+const Gallery = ({ users }: GalleryProps) => {
+  // const Gallery = ({ users }: {users:Users}) => {
+
   console.log("fetched users", users);
   // const Gallery = ({users}) => {
   return (
@@ -28,11 +34,11 @@ const Gallery = ({ users }) => {
       <div>
         <h1>Art Gallery</h1>
         {users.map((user: User) => (
-          <div key={user.id}>
-            <a className={styles.single}>
+          <Link key={user.id} href={"/gallery/" + user.id}>
+            <div className={styles.single}>
               <h3>{user.name}</h3>
-            </a>
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
     </>
